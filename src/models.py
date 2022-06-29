@@ -8,64 +8,56 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-
-class Person(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    username = Column(String(250), nullable=False)
+    email = Column(String(100))
+    password = Column(String(200))
 
+
+class Favorties(Base):
+    __tablename__ = 'favorites'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    chara_id = Column(Integer, ForeignKey("character.id"))
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+
+class Characters(Base):
+    __tablename__ = "character"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+    gender = Column(String(1))
+    height = Column(Integer)
+    mass = Column(Integer)
+    hair_color = Column(String(10))
+    skin_color = Column(String(10))
+    eye_color = Column(String(5))
+    birth_year = Column(String(10))
+    homeworld = Column(String(10))
+    url_image = Column(String(2000))
 
 class Planets(Base):
-    __tablename__ = 'planetas'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    __tablename__ = "planet"
     id = Column(Integer, primary_key=True)
-    planet_name = Column(String(250))
-    planet_terrain = Column(String(250))
-    planet_population = Column(String(250))
-    planet_climate = Column(String(250))
-    planet_diameter = Column(String(250))
-    planet_rotation_period = Column(String(250))
-    planet_orbital_period = Column(String(250))
-    planet_gravity = Column(String(250))
-    planet_
+    name = Column(String(20))
+    population = Column(Integer)
+    terrain = Column(String(30))
+    diameter = Column(Integer)
+    rotation_period = Column(Integer)
+    orbital_period = Column(Integer)
+    gravity = Column(String(20))
+    climate = Column(String(30))
+    surface_water = Column(Integer)
+    url_image = Column(String(2000))
 
 
-class Personajes(Base):
-    __tablename__ = 'personajes'git add .
-    
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    personajes_name = Column(String(250))
-    personajes_color_ojos = Column(String(250))
-    personajes_color_cabello = Column(String(250))
-    
-   
+    def to_dict(self):
+        return {}
 
-class FavoritosPlanets(Base):
-    __tablename__ = 'favoritos'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
-    planets_id = Column(Integer, ForeignKey('planetas.id'))
-    planets = relationship(Planets)    
-
-class FavoritosPersonajes(Base):
-    __tablename__ = 'favoritos_personajes'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
-    personajes_id = Column(Integer, ForeignKey('personajes.id'))
-    personajes = relationship(Personajes)  
-
-      
-
-# Draw from SQLAlchemy base
+## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
